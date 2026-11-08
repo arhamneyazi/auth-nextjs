@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 
 export default function ProfilePage() {
   const router = useRouter();
-  const [userData, setUserData] = useState("No User Data");
+  const [userData, setUserData] = useState("");
 
   const logout = async () => {
     try {
@@ -16,14 +16,18 @@ export default function ProfilePage() {
       router.push("/login");
     } catch (error: any) {
       console.error(error.message);
-      toast.error(error.message);
+      toast.error(error.response?.data?.error || error.message);
     }
   };
 
   const getUserDetails = async () => {
-    const res = await axios.get("/api/users/me");
-    console.log(res.data);
-    setUserData(res.data.data._id);
+     try {
+       const res = await axios.get("/api/users/me");
+       setUserData(res.data.data._id);
+     } catch (error) {
+       toast.error("Please log in first");
+       router.push("/login");
+     }
   };
 
   useEffect(() => {
@@ -36,10 +40,10 @@ export default function ProfilePage() {
       <hr />
       <p>Profile Page</p>
       <h2 className="p-1 rounded bg-yellow-400">
-        {userData === "No User Data" ? (
-          "No data found"
-        ) : (
+        {userData ? (
           <Link href={`/profile/${userData}`}>{userData}</Link>
+        ) : (
+          "No data found"
         )}
       </h2>
       <hr />
