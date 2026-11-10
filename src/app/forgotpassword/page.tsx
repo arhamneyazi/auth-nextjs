@@ -16,8 +16,11 @@ export default function ForgotPasswordPage() {
       // We send the email to our new backend route
       await axios.post("/api/users/forgotpassword", { email });
       toast.success("Reset email sent! Check your inbox.");
-    } catch (error: any) {
-      toast.error(error.response?.data?.error || "An error occurred");
+    } catch (error) {
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.error
+        : undefined;
+      toast.error(message || "An error occurred");
     } finally {
       setLoading(false);
     }

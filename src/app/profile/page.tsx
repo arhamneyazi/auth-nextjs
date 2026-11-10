@@ -21,13 +21,13 @@ export default function ProfilePage() {
   };
 
   const getUserDetails = async () => {
-     try {
-       const res = await axios.get("/api/users/me");
-       setUserData(res.data.data._id);
-     } catch (error) {
-       toast.error("Please log in first");
-       router.push("/login");
-     }
+    try {
+      const res = await axios.get("/api/users/me");
+      setUserData(res.data.data._id);
+    } catch (error) {
+      toast.error("Please log in first");
+      router.push("/login");
+    }
   };
 
   useEffect(() => {
@@ -35,30 +35,37 @@ export default function ProfilePage() {
   }, []);
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen py-2">
-      <h1>Profile</h1>
-      <hr />
-      <p>Profile Page</p>
-      <h2 className="p-1 rounded bg-yellow-400">
-        {userData ? (
-          <Link href={`/profile/${userData}`}>{userData}</Link>
-        ) : (
-          "No data found"
-        )}
-      </h2>
-      <hr />
-      <button
-        className="bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4 mt-4 rounded"
-        onClick={logout}
-      >
-        Logout
-      </button>
-      <button
-        className="bg-purple-500 hover:bg-purple-800 text-white font-bold py-2 px-4 mt-4 rounded"
-        onClick={getUserDetails}
-      >
-        Get User Data
-      </button>
+    <div className="flex flex-col justify-center items-center min-h-screen px-4 bg-slate-950 text-white">
+      <div className="flex flex-col items-center w-full max-w-sm rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-xl">
+        <h1 className="text-3xl font-semibold">Profile</h1>
+        <hr className="my-6 w-full border-slate-800" />
+        <p className="text-sm text-slate-400">Profile Page</p>
+        <h2 className="mt-4 max-w-full break-all rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-3 py-2 text-sm text-indigo-300">
+          {userData ? (
+            <Link
+              href={`/profile/${userData}`}
+              className="hover:text-indigo-200 hover:underline"
+            >
+              {userData}
+            </Link>
+          ) : (
+            "No data found"
+          )}
+        </h2>
+        <hr className="my-6 w-full border-slate-800" />
+        <button
+          className="w-full py-2 font-medium rounded-lg bg-indigo-500 text-white transition hover:bg-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+          onClick={logout}
+        >
+          Logout
+        </button>
+        <button
+          className="w-full py-2 mt-3 font-medium rounded-lg border border-slate-700 bg-slate-950 text-slate-200 transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+          onClick={getUserDetails}
+        >
+          Get User Data
+        </button>
+      </div>
     </div>
   );
 }
